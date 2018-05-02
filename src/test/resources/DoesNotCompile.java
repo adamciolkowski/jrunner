@@ -1,0 +1,1 @@
+final abstract class DoesNotCompile { }

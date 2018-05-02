@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.Files.walkFileTree;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CompilerTest {
 
@@ -31,6 +32,17 @@ public class CompilerTest {
 
         Object result = instantiateAndCall("Main");
         assertThat(result).isEqualTo("ok");
+    }
+
+    @Test
+    public void throwsExceptionIfCodeDoesNotCompile() {
+        Compiler compiler = new Compiler(outputDir);
+
+        InputStream in = getClass().getResourceAsStream("/DoesNotCompile.java");
+        assertThatThrownBy(() -> compiler.compile(in))
+                .isInstanceOf(CompilationFailedException.class)
+                .hasMessageContaining("error: illegal combination of modifiers: abstract and final");
+
     }
 
     @After
