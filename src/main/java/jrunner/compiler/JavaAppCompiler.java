@@ -1,4 +1,6 @@
-package jrunner;
+package jrunner.compiler;
+
+import jrunner.JavaApp;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;

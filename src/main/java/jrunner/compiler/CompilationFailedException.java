@@ -1,4 +1,4 @@
-package jrunner;
+package jrunner.compiler;
 
 public class CompilationFailedException extends RuntimeException {
 
