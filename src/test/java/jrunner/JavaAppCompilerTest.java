@@ -14,7 +14,7 @@ import static java.nio.file.Files.walkFileTree;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class CompilerTest {
+public class JavaAppCompilerTest {
 
     Path outputDir;
 
@@ -25,7 +25,7 @@ public class CompilerTest {
 
     @Test
     public void compilesJavaClassFromStream() throws Exception {
-        jrunner.Compiler compiler = new jrunner.Compiler(outputDir);
+        JavaAppCompiler compiler = new JavaAppCompiler(outputDir);
 
         InputStream in = getClass().getResourceAsStream("/Main.java");
         compiler.compile(in);
@@ -36,7 +36,7 @@ public class CompilerTest {
 
     @Test
     public void throwsExceptionIfCodeDoesNotCompile() {
-        Compiler compiler = new Compiler(outputDir);
+        JavaAppCompiler compiler = new JavaAppCompiler(outputDir);
 
         InputStream in = getClass().getResourceAsStream("/DoesNotCompile.java");
         assertThatThrownBy(() -> compiler.compile(in))

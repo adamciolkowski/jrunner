@@ -8,21 +8,23 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Compiler {
+public class JavaAppCompiler {
 
     private final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
     private final Path outputDir;
 
-    public Compiler(Path outputDir) {
+    public JavaAppCompiler(Path outputDir) {
         this.outputDir = outputDir;
     }
 
-    public void compile(InputStream in) throws IOException {
-        Path source = outputDir.resolve("Main.java");
+    public JavaApp compile(InputStream in) throws IOException {
+        String mainClassName = "Main";
+        Path source = outputDir.resolve(mainClassName + ".java");
         try {
             Files.copy(in, source);
             compile(source);
+            return new JavaApp(outputDir, mainClassName);
         } finally {
             Files.delete(source);
         }
