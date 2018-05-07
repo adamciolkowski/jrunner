@@ -38,6 +38,16 @@ public class JavaAppRunnerTest {
         assertThat(error.toString()).isEqualTo("error");
     }
 
+    @Test
+    public void preventsFromReadingSensitiveSystemProperties() throws Exception {
+        JavaApp javaApp = compileJavaApp("/security/Properties.java");
+
+        OutputStream error = new ByteArrayOutputStream();
+        runner.run(javaApp, new Output(new NullOutputStream(), error));
+
+        assertThat(error.toString()).contains("java.security.AccessControlException: access denied");
+    }
+
     private JavaApp compileJavaApp(String resource) throws IOException {
         InputStream in = getClass().getResourceAsStream(resource);
         return new JavaAppCompiler(outputDir).compile(in);

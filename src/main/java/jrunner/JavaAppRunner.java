@@ -8,6 +8,7 @@ public class JavaAppRunner {
         String[] command = {
                 "java",
                 "-cp", app.getClassPath().toString(),
+                "-Djava.security.manager",
                 app.getMainClassName()
         };
 
