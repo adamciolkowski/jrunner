@@ -6,7 +6,8 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -20,15 +21,25 @@ public class JavaAppCompiler {
         this.outputDir = outputDir;
     }
 
-    public JavaApp compile(InputStream in) throws IOException {
+    public JavaApp compile(Reader sourceCode) throws IOException {
         String mainClassName = "Main";
         Path source = outputDir.resolve(mainClassName + ".java");
         try {
-            Files.copy(in, source);
+            copy(source, sourceCode);
             compile(source);
             return new JavaApp(outputDir, mainClassName);
         } finally {
             Files.delete(source);
+        }
+    }
+
+    private void copy(Path source, Reader reader) throws IOException {
+        try (Writer writer = Files.newBufferedWriter(source)) {
+            char[] buffer = new char[4096];
+            int read;
+            while ((read = reader.read(buffer)) != -1) {
+                writer.write(buffer, 0, read);
+            }
         }
     }
 

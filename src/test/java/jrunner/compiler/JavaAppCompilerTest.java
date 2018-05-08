@@ -5,13 +5,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.Files.walkFileTree;
+import static jrunner.TestUtil.newReader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,8 +29,8 @@ public class JavaAppCompilerTest {
     public void compilesJavaClassFromStream() throws Exception {
         JavaAppCompiler compiler = new JavaAppCompiler(outputDir);
 
-        InputStream in = getClass().getResourceAsStream("/Main.java");
-        compiler.compile(in);
+        Reader reader = newReader("/Main.java");
+        compiler.compile(reader);
 
         Object result = instantiateAndCall("Main");
         assertThat(result).isEqualTo("ok");
@@ -39,8 +40,8 @@ public class JavaAppCompilerTest {
     public void throwsExceptionIfCodeDoesNotCompile() {
         JavaAppCompiler compiler = new JavaAppCompiler(outputDir);
 
-        InputStream in = getClass().getResourceAsStream("/DoesNotCompile.java");
-        assertThatThrownBy(() -> compiler.compile(in))
+        Reader reader = newReader("/DoesNotCompile.java");
+        assertThatThrownBy(() -> compiler.compile(reader))
                 .isInstanceOf(CompilationFailedException.class)
                 .hasMessageContaining("error: illegal combination of modifiers: abstract and final");
 

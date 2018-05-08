@@ -7,12 +7,13 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.nio.file.Path;
 
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.Files.walkFileTree;
+import static jrunner.TestUtil.newReader;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JavaAppRunnerTest {
@@ -49,8 +50,8 @@ public class JavaAppRunnerTest {
     }
 
     private JavaApp compileJavaApp(String resource) throws IOException {
-        InputStream in = getClass().getResourceAsStream(resource);
-        return new JavaAppCompiler(outputDir).compile(in);
+        Reader reader = newReader(resource);
+        return new JavaAppCompiler(outputDir).compile(reader);
     }
 
     @After
