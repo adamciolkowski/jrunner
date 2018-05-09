@@ -49,6 +49,17 @@ public class JavaAppRunnerTest {
         assertThat(error.toString()).contains("java.security.AccessControlException: access denied");
     }
 
+    @Test
+    public void maxHeapSizeIsLimitedTo8MB() throws Exception {
+        JavaApp javaApp = compileJavaApp("/PrintsMaxMemory.java");
+
+        OutputStream output = new ByteArrayOutputStream();
+        runner.run(javaApp, new Output(output, new NullOutputStream()));
+
+        String s = output.toString().trim();
+        assertThat(Integer.parseInt(s)).isLessThanOrEqualTo(8);
+    }
+
     private JavaApp compileJavaApp(String resource) throws IOException {
         Reader reader = newReader(resource);
         return new JavaAppCompiler(outputDir).compile(reader);

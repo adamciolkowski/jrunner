@@ -9,6 +9,7 @@ public class JavaAppRunner {
                 "java",
                 "-cp", app.getClassPath().toString(),
                 "-Djava.security.manager",
+                "-Xms2m", "-Xmx8m",
                 app.getMainClassName()
         };
 
