@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>JRunner</title>
 </head>
 <body>
 <form action="/" method="post">
-    <textarea name="sourceCode"></textarea>
+    <textarea name="sourceCode" th:text="${{sourceCode}}"></textarea>
     <input type="submit"/>
 </form>
 </body>
