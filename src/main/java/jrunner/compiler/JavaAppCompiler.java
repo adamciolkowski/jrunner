@@ -1,5 +1,6 @@
 package jrunner.compiler;
 
+import jrunner.DeletingVisitor;
 import jrunner.JavaApp;
 
 import javax.tools.JavaCompiler;
@@ -28,6 +29,9 @@ public class JavaAppCompiler {
             copy(source, sourceCode);
             compile(source);
             return new JavaApp(outputDir, mainClassName);
+        } catch (Exception e) {
+            Files.walkFileTree(outputDir, new DeletingVisitor());
+            throw e;
         } finally {
             Files.delete(source);
         }

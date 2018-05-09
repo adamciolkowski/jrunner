@@ -1,5 +1,7 @@
 package jrunner;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class JavaApp {
@@ -18,5 +20,9 @@ public class JavaApp {
 
     public String getMainClassName() {
         return mainClassName;
+    }
+
+    public void destroy() throws IOException {
+        Files.walkFileTree(classPath, new DeletingVisitor());
     }
 }

@@ -16,7 +16,15 @@ public class JRunnerService {
         JavaAppCompiler compiler = new JavaAppCompiler(tempDir);
         JavaApp app = compiler.compile(new StringReader(sourceCode));
 
-        JavaAppRunner runner = new JavaAppRunner();
-        runner.run(app, output);
+        run(app, output);
+    }
+
+    private void run(JavaApp app, Output output) throws IOException, InterruptedException {
+        try {
+            JavaAppRunner runner = new JavaAppRunner();
+            runner.run(app, output);
+        } finally {
+            app.destroy();
+        }
     }
 }
